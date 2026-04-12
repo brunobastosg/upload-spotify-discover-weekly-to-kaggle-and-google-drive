@@ -20,8 +20,9 @@ jobs:
         env:
           SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
           SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_DISCOVER_WEEKLY_PLAYLIST_ID: ${{ secrets.SPOTIFY_DISCOVER_WEEKLY_PLAYLIST_ID }}
           SPOTIFY_AUTH_CACHE: ${{ secrets.SPOTIFY_AUTH_CACHE }}
-        run: python download-playlist-from-spotify.py
+        run: python download-playlist-from-spotify-bs.py
       - name: cache spotify auth info
         id: cache-spotify-auth
         uses: actions/cache@v4
@@ -63,11 +64,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install kaggle
+      - run: pip install kaggle==2.0.1
       - name: download current dataset from kaggle
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
         run: kaggle datasets download ${{ secrets.KAGGLE_USERNAME }}/my-spotify-discover-weekly -f my-spotify-discover-weekly.csv -p dataset
       - name: save current dataset as artifact
         uses: actions/upload-artifact@v4
@@ -118,7 +119,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install kaggle
+      - run: pip install kaggle==2.0.1
       - run: cp *.csv kaggle/
       - name: get current date
         id: get-current-date
@@ -126,5 +127,5 @@ jobs:
       - name: upload datasets
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
-          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
         run: kaggle datasets version -p kaggle -m "Added playlist for the week of ${{ steps.get-current-date.outputs.CURRENT_DATE }}"

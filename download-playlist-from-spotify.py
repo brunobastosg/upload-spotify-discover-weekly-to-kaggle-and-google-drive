@@ -19,14 +19,14 @@ if local_run.lower() == 'true':
 
 client_id = os.getenv('SPOTIFY_CLIENT_ID')
 client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
-redirect_uri = 'http://localhost:3000'
+redirect_uri = 'http://127.0.0.1:3000'
 
 local_cache_exists = Path('.cache').is_file()
 
 if not local_cache_exists and 'SPOTIFY_AUTH_CACHE' in os.environ:
     auth_cache = os.environ['SPOTIFY_AUTH_CACHE']
 
-    with open('.cache', 'w') as cache_file:
+    with open('.cache', 'w', encoding='utf-8') as cache_file:
         cache_file.write(json.dumps(json.loads(auth_cache)))
 
 sp = spotipy.Spotify(

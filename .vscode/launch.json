@@ -16,6 +16,17 @@
             }
         },
         {
+            "name": "Local Run - Download From Spotify BeautifulSoup",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "download-playlist-from-spotify-bs.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "LOCAL_RUN": "true"
+            }
+        },
+        {
             "name": "Local Run - Merge CSV's",
             "type": "debugpy",
             "request": "launch",
