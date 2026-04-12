@@ -1,9 +1,8 @@
 name: update-dataset
 run-name: Update Dataset
 on:
-  [push]
-  # schedule:
-    # - cron: "0 4 * * 1" # every monday at 4am UTC
+  schedule:
+    - cron: "0 4 * * 1" # every monday at 4am UTC
 
 jobs:
   download-this-weeks-playlist:
