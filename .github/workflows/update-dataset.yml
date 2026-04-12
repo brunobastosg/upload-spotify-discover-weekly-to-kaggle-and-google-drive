@@ -45,14 +45,14 @@ jobs:
           name: this-weeks-csv
       - name: get current date
         id: get-current-date
-        run: echo "CURRENT_DATE=$(date --date="yesterday" +%Y-%m-%d)" >> $GITHUB_OUTPUT
+        run: echo "DATE_LAST_SUNDAY=$(date --date="last-sunday" +%Y-%m-%d)" >> $GITHUB_OUTPUT
       - name: upload to google drive
         uses: adityak74/google-drive-upload-git-action@main
         with:
           credentials: ${{ secrets.GCP_SERVICE_ACCOUNT_CREDENTIALS }}
           filename: "this-weeks-playlist.csv"
           folderId: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
-          name: "semana-${{ steps.get-current-date.outputs.CURRENT_DATE }}.csv"
+          name: "semana-${{ steps.get-current-date.outputs.DATE_LAST_SUNDAY }}.csv"
           overwrite: "true"
 
   download-current-dataset-from-kaggle:
@@ -123,9 +123,9 @@ jobs:
       - run: cp *.csv kaggle/
       - name: get current date
         id: get-current-date
-        run: echo "CURRENT_DATE=$(date --date="yesterday" +%Y-%m-%d)" >> $GITHUB_OUTPUT
+        run: echo "DATE_LAST_SUNDAY=$(date --date="last sunday" +%Y-%m-%d)" >> $GITHUB_OUTPUT
       - name: upload datasets
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
           KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
-        run: kaggle datasets version -p kaggle -m "Added playlist for the week of ${{ steps.get-current-date.outputs.CURRENT_DATE }}"
+        run: kaggle datasets version -p kaggle -m "Added playlist for the week of ${{ steps.get-current-date.outputs.DATE_LAST_SUNDAY }}"
